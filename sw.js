@@ -31,5 +31,11 @@ self.addEventListener('activate', e => {
 // Evento fetch para descargar archivos estaticos
 self.addEventListener('fetch', e => {
     console.log('Service Worker: Fetch', e);
-    console.log(e.request.url);
+    
+    e.respondWith(
+        caches.match(e.request)
+            .then( respuestaCache => {
+                return respuestaCache || fetch(e.request);
+            })
+    )
 })
